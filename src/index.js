@@ -4,24 +4,29 @@ import { inc, dec, rnd } from './actions';
 
 
 const store = createStore(reducer);
+const { dispatch } = store;
+
+const bindActionCretor = (creator, dispatch) => (...args) => {
+  dispatch(creator(...args));
+};
+
+const incDispatch = bindActionCretor(inc, dispatch);
+const decDispatch = bindActionCretor(dec, dispatch);
+const rndDispatch = bindActionCretor(rnd, dispatch);
 
 document
   .getElementById('inc')
-  .addEventListener('click', () => {
-    store.dispatch(inc());
-  });
+  .addEventListener('click', incDispatch);
 
 document
   .getElementById('dec')
-  .addEventListener('click', () => {
-    store.dispatch(dec());
-  });
+  .addEventListener('click', decDispatch);
 
 document
   .getElementById('rnd')
   .addEventListener('click', () => {
     const payLoad = Math.floor(Math.random()*10);
-    store.dispatch(rnd(payLoad));
+      rndDispatch(payLoad);
   });
 
 const update = () => {
